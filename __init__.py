@@ -12,5 +12,8 @@ Each sub-pixel is 16-bit and each pixel has four-components
 from pkgutil import extend_path
 __path__ = extend_path(__path__, __name__)
 
+__all__ = ['FarbfeldEncodeError', 'FarbfeldDecodeError',
+           'FarbfeldEncoder', 'FarbfeldDecoder']
+
 from decode import *
 from encode import *

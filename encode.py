@@ -1,5 +1,3 @@
-__all__ = ['FarbfeldEncoder', 'FarbfeldEncodeError']
-
 from array import array
 from struct import pack
 from itertools import chain

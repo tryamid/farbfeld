@@ -1,5 +1,3 @@
-__all__ = ['FarbfeldDecoder', 'FarbfeldDecodeError']
-
 from struct import unpack
 from array import array
 
