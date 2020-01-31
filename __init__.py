@@ -11,13 +11,17 @@ Each sub-pixel is 16-bit and each pixel has four-components
 from types import SimpleNamespace
 from struct import pack, unpack
 from array import array
-from itertools import chain
+from itertools import chain, zip_longest
 
 class FarbfeldEncodeError(Exception):
     pass
 
 class FarbfeldDecodeError(Exception):
     pass
+
+def grouper(iterable, n, fillvalue=None):
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
 
 class FarbfeldEncoder:
     """
@@ -59,6 +63,10 @@ class FarbfeldDecoder:
             a file-like object that must be readable via
             the `read()` call and should return bytes.
         """
+        if hasattr(infile, 'read'):
+            self.infile = infile
+        else:
+            raise FarbfeldDecodeError("file-like object doesn't support read() calls")
 
         if infile.read(8) != b'farbfeld':
             raise FarbfeldDecodeError("invalid signature found while parsing")
@@ -66,4 +74,4 @@ class FarbfeldDecoder:
         (self.width, self.height) = unpack("<II", infile.read(8))
 
     def decode(self):
-        pass
+        return array('H', [iter(self.infile.read(), b'')])
