@@ -11,17 +11,13 @@ Each sub-pixel is 16-bit and each pixel has four-components
 from types import SimpleNamespace
 from struct import pack, unpack
 from array import array
-from itertools import chain, zip_longest
+from itertools import chain
 
 class FarbfeldEncodeError(Exception):
     pass
 
 class FarbfeldDecodeError(Exception):
     pass
-
-def grouper(iterable, n, fillvalue=None):
-    args = [iter(iterable)] * n
-    return zip_longest(*args, fillvalue=fillvalue)
 
 class FarbfeldEncoder:
     "Encoder to encode 16-bit pixels into the Farbfeld image format."
@@ -37,9 +33,8 @@ class FarbfeldEncoder:
             support bytes as the first argument.
 
         imageframe
-            a subscriptable 2D object, that must have one element
-            at the top-level, inside an element must contain
-            4 elements (sub-pixels). Pixel must be ordered as 'RGBA'.
+            an 2D iterable object representing an image frame
+            (row-major), pixels are RGBA, bitdepth is 16-bit.
         """
         if not hasattr(outfile, 'write'):
             raise FarbfeldEncodeError("file-like object doesn't support write() calls")
@@ -71,7 +66,7 @@ class FarbfeldDecoder:
 
     def decode(self) -> map:
         """
-        Read the image file and assemble rows to create a 2D array of pixels.
-        Bitdepth is always 16-bits per channel.
+        Creates a iterable 2D object representing an image frame
+        (row-major), pixels are RGBA, bitdepth is 16-bit.
         """
         return map(lambda row: array('H').frombytes(row), iter(self.infile.read(), b''))
