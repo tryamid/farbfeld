@@ -24,10 +24,8 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 class FarbfeldEncoder:
-    """
-    Encoder to encode raw pixels of an arbitary bitdepth ranging
-    `1` bit to `64` bit into Farbfeld image of `16` bit pixels.
-    """
+    "Encoder to encode 16-bit pixels into the Farbfeld image format."
+
     def __init__(self, width, height):
         self.width = abs(width)
         self.height = abs(height)
@@ -53,10 +51,8 @@ class FarbfeldEncoder:
         outfile.flush()
 
 class FarbfeldDecoder:
-    """
-    Decoder to decode the Farbfeld image format into raw pixels of
-    `16` bit into an arbitary bitdepth ranging `1` bit to `64` bits.
-    """
+    "Decoder to decode the Farbfeld image format into 16-bit pixels."
+
     def __init__(self, infile):
         """
         infile
@@ -73,5 +69,9 @@ class FarbfeldDecoder:
 
         (self.width, self.height) = unpack("<II", infile.read(8))
 
-    def decode(self):
-        return array('H', [iter(self.infile.read(), b'')])
+    def decode(self) -> map:
+        """
+        Read the image file and assemble rows to create a 2D array of pixels.
+        Bitdepth is always 16-bits per channel.
+        """
+        return map(lambda row: array('H').frombytes(row), iter(self.infile.read(), b''))
