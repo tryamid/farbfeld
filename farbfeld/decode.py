@@ -1,5 +1,4 @@
-from struct import unpack
-from array import array
+from struct import unpack, iter_unpack
 
 class FarbfeldDecodeError(Exception):
     pass
@@ -28,10 +27,5 @@ class FarbfeldDecoder:
         Creates a iterable 2D object representing an image frame
         (row-major), pixels are RGBA, bitdepth is 16-bit.
         """
-        def parse_16b_pixels(row):
-            prow = array('H')
-            prow.frombytes(row)
-
-            return prow
-
-        return map(parse_16b_pixels, iter(lambda: self._infile.read(self.width * 4), b''))
+        return map(lambda row: map(lambda pix: pix[0], iter_unpack('<H', row)), 
+                    iter(lambda: self._infile.read(self.width * 4), b''))

@@ -1,6 +1,6 @@
-from array import array
 from struct import pack
 from itertools import chain
+from functools import reduce
 
 class FarbfeldEncodeError(Exception):
     pass
@@ -42,6 +42,6 @@ class FarbfeldEncoder:
 
         outfile.write(b'farbfeld' + pack('<II', width, height))
         outfile.write(
-            array('H', chain(*imageframe))
-        .tobytes())
+            reduce(lambda ppix,pix: ppix+pack('<H', pix), 
+                    chain(*imageframe), b''))
         outfile.flush()
