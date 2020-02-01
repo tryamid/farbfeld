@@ -1,10 +1,8 @@
 """
 Implementation of the [Suckless' Farbfeld][1] image format.
 
-Farbfeld is a lossless image format without any compression,
-stores raw RGB pixels.
-Each sub-pixel is 16-bit and each pixel has four-components
-`Red`,`Green`,`Blue`,`Alpha` which makes each pixel size 64-bit.
+Farbfeld is a lossless image format which store 16-bit raw
+pixels in the RGBA pixelformat.
 
 [1]: https://tools.suckless.org/farbfeld/
 """
