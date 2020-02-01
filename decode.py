@@ -14,7 +14,7 @@ class FarbfeldDecoder:
             the `read()` call and should return bytes.
         """
         if hasattr(infile, 'read'):
-            self.infile = infile
+            self._infile = infile
         else:
             raise FarbfeldDecodeError("file-like object doesn't support read() calls")
 
