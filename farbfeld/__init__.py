@@ -13,5 +13,5 @@ __path__ = extend_path(__path__, __name__)
 __all__ = ['FarbfeldEncodeError', 'FarbfeldDecodeError',
            'FarbfeldEncoder', 'FarbfeldDecoder']
 
-from decode import *
-from encode import *
+from .decode import *
+from .encode import *
