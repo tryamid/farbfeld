@@ -2,7 +2,7 @@ import setuptools
 import subprocess
 
 setuptools.setup(
-    name= 'farbfeld',
+    name= 'py-farbfeld',
     version= subprocess.check_output(['git', 'describe', '--tags']).strip() \
             .decode('utf-8') \
             .split('-g')[0],
