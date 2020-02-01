@@ -7,7 +7,7 @@ class FarbfeldEncodeError(Exception):
 
 class FarbfeldEncoder:
     "Encoder to encode 16-bit pixels into the Farbfeld image format."
-
+    
     def __init__(self, width, height):
         self.width = abs(width)
         self.height = abs(height)
@@ -25,7 +25,22 @@ class FarbfeldEncoder:
         if not hasattr(outfile, 'write'):
             raise FarbfeldEncodeError("file-like object doesn't support write() calls")
 
-        outfile.write(b'farbfeld' + pack('<II', self.width, self.height))
+        try:
+            height = len(imageframe)
+            width = int(len(imageframe[0]) / 4)
+        except (IndexError, TypeError):
+            raise FarbfeldEncodeError("layout of pixels is non-standard")
+
+        if width % 4 != 0:
+            raise FarbfeldEncodeError("pixelformat isn't RGBA")
+
+        # slice upto the limit if slice_frame is supplied.
+        if self.width > width or self.height > height:
+            imageframe = imageframe[:height, :width * 4]
+        elif self.width < width or self.height < height:
+            raise FarbfeldEncodeError(f"pixels supplied is lesser than the amount of pixels specified")
+
+        outfile.write(b'farbfeld' + pack('<II', width, height))
         outfile.write(
             array('H', chain(*imageframe))
         .tobytes())
