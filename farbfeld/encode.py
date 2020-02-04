@@ -1,5 +1,5 @@
-from struct import pack
-from itertools import chain
+from struct import pack, Struct
+from itertools import starmap
 from functools import reduce
 
 class FarbfeldEncodeError(Exception):
@@ -11,6 +11,8 @@ class FarbfeldEncoder:
     def __init__(self, width, height):
         self.width = abs(width)
         self.height = abs(height)
+
+        self._rowutil = Struct(f'<{width * 4}H')
 
     def encode(self, outfile, imageframe):
         """
@@ -37,11 +39,11 @@ class FarbfeldEncoder:
         # slice upto the limit if slice_frame is supplied.
         if self.width > width or self.height > height:
             imageframe = imageframe[:height, :width * 4]
+        
         elif self.width < width or self.height < height:
             raise FarbfeldEncodeError(f"pixels supplied is lesser than the amount of pixels specified")
 
         outfile.write(b'farbfeld' + pack('<II', width, height))
-        outfile.write(
-            reduce(lambda ppix,pix: ppix+pack('<H', pix), 
-                    chain(*imageframe), b''))
+        # writes image data row by row to the output file.
+        starmap(outfile.write, map(lambda row: self._rowutil.pack(row), imageframe))
         outfile.flush()

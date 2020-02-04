@@ -1,4 +1,4 @@
-from struct import unpack, iter_unpack
+from struct import unpack, Struct
 
 class FarbfeldDecodeError(Exception):
     pass
@@ -21,11 +21,13 @@ class FarbfeldDecoder:
             raise FarbfeldDecodeError("invalid signature found while parsing")
 
         (self.width, self.height) = unpack("<II", infile.read(8))
+        
+        self._row_unpacker = Struct(f'<{self.width * 4}H')
 
     def decode(self) -> map:
         """
         Creates a iterable 2D object representing an image frame
         (row-major), pixels are RGBA, bitdepth is 16-bit.
         """
-        return map(lambda row: map(lambda pix: pix[0], iter_unpack('<H', row)), 
+        return map(lambda row: self._row_unpacker.unpack(row)[0],
                     iter(lambda: self._infile.read(self.width * 4), b''))
