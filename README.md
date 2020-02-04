@@ -1,5 +1,7 @@
 ![](https://i.imgur.com/m6bVkrs.png)
 
+[![PyPI](https://img.shields.io/pypi/v/py-farbfeld?style=flat-square)](https://pypi.org/project/py-farbfeld/)
+
 A Python module for encoding and decoding [Farbeld image format][1]. It encodes or decodes pixels of
 16-bit per pixel in the big-endian byteorder in the [**RGBA** pixel-format][2]. This module provides
 a simple but elegant API.
