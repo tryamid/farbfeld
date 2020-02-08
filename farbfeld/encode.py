@@ -44,6 +44,6 @@ class FarbfeldEncoder:
             raise FarbfeldEncodeError(f"pixels supplied is lesser than the amount of pixels specified")
 
         outfile.write(b'farbfeld' + pack('<II', width, height))
-        # writes image data row by row to the output file.
-        starmap(outfile.write, map(lambda row: self._rowutil.pack(row), imageframe))
+        for row in imageframe:
+            outfile.write(self._rowutil.pack(row))
         outfile.flush()
