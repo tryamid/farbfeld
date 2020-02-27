@@ -17,4 +17,4 @@ decoded before this library can parse it.
 for runtime.
 
 [1]: https://tools.suckless.org/farbfeld/
-[2]: https://en.wikipedia.org/wiki/RGBA_color_mod
+[2]: https://en.wikipedia.org/wiki/RGBA_color_model
