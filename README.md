@@ -13,8 +13,7 @@ Data compression on the image is not specified in the specification
 so as this *API*. If a compression is applied externally, it must be
 decoded before this library can parse it.
 
-> The code is platform independent and requires no external dependencies. Python *`>=3.5`* is required
-for runtime.
+> The code is platform independent and requires no external dependencies outside the standard library. Python *`>=3.5`* is required for runtime.
 
 [1]: https://tools.suckless.org/farbfeld/
 [2]: https://en.wikipedia.org/wiki/RGBA_color_model
