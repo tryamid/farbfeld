@@ -1,5 +1,4 @@
 from struct import pack, Struct
-from itertools import starmap
 from functools import reduce
 
 class FarbfeldEncodeError(Exception):
